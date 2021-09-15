@@ -6,84 +6,275 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textBillTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#764747"
-        android:text="@string/bill_total_with_tax"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
+    <!-- bill -->
 
-    <TextView
-        android:id="@+id/textTip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tip Percent:"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBillTotal"
-        app:layout_constraintVertical_bias="0.063" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupTip"
-        android:layout_width="313dp"
-        android:layout_height="201dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTip"
-        app:layout_constraintVertical_bias="0.033">
-
-        <RadioButton
-            android:id="@+id/radioButtonTipOne"
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:text="12%"
-            android:textAlignment="viewStart" />
-
-        <RadioButton
-            android:id="@+id/radioButtonradioButtonTipTwo"
-            android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="15%" />
-
-        <RadioButton
-            android:id="@+id/radioButtonradioButtonTipThree"
-            android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="18%" />
-
-        <RadioButton
-            android:id="@+id/radioButtonradioButtonTipFour"
-            android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="20%" />
-    </RadioGroup>
+    <!-- tip options -->
 
     <EditText
         android:id="@+id/editTextNumberDecimal"
-        android:layout_width="195dp"
-        android:layout_height="51dp"
-        android:ems="10"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="#E5FFDE"
         android:hint="0.00"
         android:inputType="numberDecimal"
         android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/radioGroupTip"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toEndOf="@+id/textBillTotal"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.186" />
+        app:layout_constraintVertical_bias="0.361" />
+
+    <TextView
+        android:id="@+id/textTipAmountCalc"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="#e6e6e6"
+        android:text="$0.00"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.933"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTip"
+        app:layout_constraintVertical_bias="0.088" />
+
+    <TextView
+        android:id="@+id/textOverageCalc"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="#e6e6e6"
+        android:text="$0.00"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPersonTotalCalc"
+        app:layout_constraintVertical_bias="0.158" />
+
+    <TextView
+        android:id="@+id/textOverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overage:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textOverageCalc"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPersonTotal"
+        app:layout_constraintVertical_bias="0.097" />
+
+    <TextView
+        android:id="@+id/textPersonTotalCalc"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="#e6e6e6"
+        android:text="$0.00"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editPeopleAmt"
+        app:layout_constraintVertical_bias="0.136" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLEAR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPersonTotalCalc"
+        app:layout_constraintVertical_bias="0.543" />
+
+    <TextView
+        android:id="@+id/textPeopleAmt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Number of People:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editPeopleAmt"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTipTotal"
+        app:layout_constraintVertical_bias="0.172" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTipPercent"
+        app:layout_constraintVertical_bias="0.003">
+
+        <RadioButton
+            android:id="@+id/radioButtonTipOne"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/purple_500"
+            android:text="12%"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radioButtonradioButtonTipTwo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/purple_500"
+            android:text="15%"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radioButtonradioButtonTipThree"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/purple_500"
+            android:text="18%"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radioButtonradioButtonTipFour"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/purple_500"
+            android:text="20%"
+            android:textSize="20sp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="GO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTipTotalCalc"
+        app:layout_constraintVertical_bias="0.134" />
+
+    <EditText
+        android:id="@+id/editPeopleAmt"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="12dp"
+        android:background="#E5FFDE"
+        android:hint="1"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGo"
+        app:layout_constraintTop_toBottomOf="@+id/textTipTotalCalc"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <TextView
+        android:id="@+id/textPersonTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="Total per Person:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textPersonTotalCalc"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPeopleAmt"
+        app:layout_constraintVertical_bias="0.148" />
+
+    <TextView
+        android:id="@+id/textBillTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bill_total_with_tax"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.056" />
+
+    <TextView
+        android:id="@+id/textTipPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tip Percent:"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBillTotal"
+        app:layout_constraintVertical_bias="0.065" />
+
+    <TextView
+        android:id="@+id/textTipTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total with Tip:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textTipTotalCalc"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTipAmount"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <TextView
+        android:id="@+id/textTipTotalCalc"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:background="#e6e6e6"
+        android:singleLine="true"
+        android:text="$0.00"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.933"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTipAmountCalc"
+        app:layout_constraintVertical_bias="0.117" />
+
+    <TextView
+        android:id="@+id/textTipAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tip Amount:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textTipAmountCalc"
+        app:layout_constraintHorizontal_bias="0.211"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTip"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <!--tip amount-->
+
+    <!--total with tip-->
+
+    <!--numer of people-->
+
+    <!--total per person-->
+
+    <!--overage-->
+
+    <!--clear-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
