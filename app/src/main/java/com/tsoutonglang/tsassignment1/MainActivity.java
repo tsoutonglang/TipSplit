@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         billTotal = findViewById(R.id.editTextNumberDecimal);
 
+        // user selects how much they wanna tip
         tipGroup = findViewById(R.id.radioGroupTip);
         tipAmount = findViewById(R.id.textTipAmountCalc);
         tipTotal = findViewById(R.id.textTipTotalCalc);
@@ -40,29 +41,68 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int radioId = tipGroup.getCheckedRadioButtonId();
                 tipButton = findViewById(radioId);
-
-                double bill;
-                if (billTotal.getText().toString().equals("")) {
-                    bill = 0.00;
-                    tipGroup.clearCheck();
-                } else {
-                    bill = Double.parseDouble(String.valueOf(billTotal.getText().toString()));
-                }
-                Log.d("debug - bill: ", Double.toString(bill));
-
-                double percent = Double.parseDouble(tipButton.getText().toString().substring(0, tipButton.getText().toString().indexOf('%')));
-                Log.d("debug - percent: ", Double.toString(percent));
-
-                double tip = calculateTip(percent, bill);
-                Log.d("debug - tip amount: ", Double.toString(tip));
-
-                double total = calculateTotal(tip, bill);
-                Log.d("debug - total w/ tip:  ", Double.toString(total));
-
-                tipAmount.setText("$" + String.format("%1$,.2f", tip));
-                tipTotal.setText("$" + String.format("%1$,.2f", total));
+                checkButton(tipButton);
             }
         });
+        Button tip15 = findViewById(R.id.radioButtonradioButtonTipTwo);
+        tip15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int radioId = tipGroup.getCheckedRadioButtonId();
+                tipButton = findViewById(radioId);
+                checkButton(tipButton);
+            }
+        });
+        Button tip18 = findViewById(R.id.radioButtonradioButtonTipThree);
+        tip18.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int radioId = tipGroup.getCheckedRadioButtonId();
+                tipButton = findViewById(radioId);
+                checkButton(tipButton);
+            }
+        });
+        Button tip20 = findViewById(R.id.radioButtonradioButtonTipFour);
+        tip20.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int radioId = tipGroup.getCheckedRadioButtonId();
+                tipButton = findViewById(radioId);
+                checkButton(tipButton);
+            }
+        });
+
+        //TODO: calculate split amount number of people
+    }
+
+    public void checkButton(RadioButton tipButton){
+        double bill;
+        // check if the user inputted nothing or a value
+        // if nothing: bill is set to zero and selection is cleared
+        // else bill has a total
+        if (billTotal.getText().toString().equals("")) {
+            bill = 0.00;
+            tipGroup.clearCheck();
+        } else {
+            bill = Double.parseDouble(String.valueOf(billTotal.getText().toString()));
+        }
+        Log.d("debug - bill", Double.toString(bill));
+
+        // get the percent tip the user selected
+        int percent = Integer.parseInt(tipButton.getText().toString().substring(0, tipButton.getText().toString().indexOf('%')));
+        Log.d("debug - percent", Integer.toString(percent));
+
+        // calculate how much tip is
+        double tip = calculateTip(percent, bill);
+        Log.d("debug - tip amount ", Double.toString(tip));
+
+        // calculate the bill total with the tip
+        double total = calculateTotal(tip, bill);
+        Log.d("debug - total w/ tip", Double.toString(total));
+
+        // display the tip calculated and the total with tip
+        tipAmount.setText("$" + String.format("%1$,.2f", tip));
+        tipTotal.setText("$" + String.format("%1$,.2f", total));
     }
 
     public double calculateTip(double percent, double bill){
