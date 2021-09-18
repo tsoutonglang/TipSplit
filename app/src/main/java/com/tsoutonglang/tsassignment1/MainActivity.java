@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tipAmount, tipTotal;
 
     EditText peopleAmt;
+    Button peopleGo;
     TextView personTotal, overage;
+    double total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 checkButton(tipButton);
             }
         });
+
         Button tip15 = findViewById(R.id.radioButtonradioButtonTipTwo);
         tip15.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 checkButton(tipButton);
             }
         });
+
         Button tip18 = findViewById(R.id.radioButtonradioButtonTipThree);
         tip18.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 checkButton(tipButton);
             }
         });
+
         Button tip20 = findViewById(R.id.radioButtonradioButtonTipFour);
         tip20.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,47 +77,78 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: calculate split amount number of people
+        peopleAmt = findViewById(R.id.editPeopleAmt);
+        personTotal = findViewById(R.id.textPersonTotalCalc);
+        overage = findViewById(R.id.textOverageCalc);
+        peopleGo = findViewById(R.id.buttonGo);
+
+        // go button
+        peopleGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // check if the user put the number of people
+                // no input = 1 person
+                int people;
+                if (peopleAmt.getText().toString().equals("") || Integer.parseInt(String.valueOf(peopleAmt.getText().toString()))<1) {
+                    people = 1;
+                } else {
+                    people = Integer.parseInt(String.valueOf(peopleAmt.getText().toString()));
+                    Log.d("debug - amount of people", Integer.toString(people));
+                }
+
+                calculateSplit(people);
+            }
+        });
+
+        // TODO: clear button
     }
 
     public void checkButton(RadioButton tipButton){
-        double bill;
         // check if the user inputted nothing or a value
-        // if nothing: bill is set to zero and selection is cleared
-        // else bill has a total
+        // no input bill is set to zero and selection is cleared
+        double bill;
         if (billTotal.getText().toString().equals("")) {
             bill = 0.00;
             tipGroup.clearCheck();
         } else {
             bill = Double.parseDouble(String.valueOf(billTotal.getText().toString()));
         }
-        Log.d("debug - bill", Double.toString(bill));
 
         // get the percent tip the user selected
         int percent = Integer.parseInt(tipButton.getText().toString().substring(0, tipButton.getText().toString().indexOf('%')));
-        Log.d("debug - percent", Integer.toString(percent));
 
         // calculate how much tip is
         double tip = calculateTip(percent, bill);
-        Log.d("debug - tip amount ", Double.toString(tip));
 
         // calculate the bill total with the tip
-        double total = calculateTotal(tip, bill);
-        Log.d("debug - total w/ tip", Double.toString(total));
-
-        // display the tip calculated and the total with tip
-        tipAmount.setText("$" + String.format("%1$,.2f", tip));
-        tipTotal.setText("$" + String.format("%1$,.2f", total));
+        calculateTotal(tip, bill);
     }
 
     public double calculateTip(double percent, double bill){
-        double tip = bill*percent/100.00;
-
+        double tip = Math.round(bill*100.0*percent/100.00)/100.0;
+        tipAmount.setText("$" + String.format("%1$,.2f", tip));
         return tip;
     }
 
-    public double calculateTotal(double tip, double bill){
-        double total = bill+tip;
-        return total;
+    public void calculateTotal(double tip, double bill){
+        total = bill+tip;
+        tipTotal.setText("$" + String.format("%1$,.2f", total));
+    }
+
+    public void calculateSplit(int people){
+        double split = Math.ceil(total*100.0/people)/100.0;
+        Log.d("debug - split amount", Double.toString(split));
+
+        // display split amount
+        personTotal.setText("$" + String.format("%1$,.2f", split));
+        calculateOverage(split, people);
+    }
+
+    public void calculateOverage(double split, int people){
+        double splitTotal = split*people;
+        Log.d("debug - split total", Double.toString(splitTotal));
+        double over = ((splitTotal*100)-(total*100))/100.00;
+        Log.d("debug - split total", Double.toString(over));
+        overage.setText("$" + String.format("%1$,.2f", over));
     }
 }
