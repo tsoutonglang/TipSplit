@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     TextView personTotal, overage;
     double total;
 
+    Button clearAll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // TODO: clear button
+        clearAll = findViewById(R.id.buttonClear);
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     public void checkButton(RadioButton tipButton){
