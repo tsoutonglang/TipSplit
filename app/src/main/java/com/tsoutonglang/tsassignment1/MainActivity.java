@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
                     people = 1;
                 } else {
                     people = Integer.parseInt(String.valueOf(peopleAmt.getText().toString()));
-                    Log.d("debug - amount of people", Integer.toString(people));
                 }
 
                 calculateSplit(people);
@@ -120,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
                 total = 0;
                 peopleAmt.setText("");
                 personTotal.setText("$0.00");
+                split = 0;
                 overage.setText("$0.00");
+                over = 0;
 
                 Log.d("clear tip", Double.toString(tip));
                 Log.d("clear total", Double.toString(total));
