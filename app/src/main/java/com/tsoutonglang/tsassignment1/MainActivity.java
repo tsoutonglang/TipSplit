@@ -3,32 +3,28 @@ package com.tsoutonglang.tsassignment1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-
 public class MainActivity extends AppCompatActivity {
     EditText billTotal;
 
     RadioGroup tipGroup;
     RadioButton tipButton;
-    double tip;
+    double tip = 0;
     TextView tipAmount, tipTotal;
-    double total;
+    double total = 0;
 
     EditText peopleAmt;
     Button peopleGo;
     TextView personTotal, overage;
-    double split;
-    double over;
+    double split = 0;
+    double over = 0;
 
     Button clearAll;
 
@@ -44,44 +40,35 @@ public class MainActivity extends AppCompatActivity {
         tipAmount = findViewById(R.id.textTipAmountCalc);
         tipTotal = findViewById(R.id.textTipTotalCalc);
 
+        tipAmount.setText(getString(R.string.tip_amount, tip));
+        tipTotal.setText(getString(R.string.total_with_tip, total));
+
         Button tip12 = findViewById(R.id.radioButtonTipOne);
-        tip12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int radioId = tipGroup.getCheckedRadioButtonId();
-                tipButton = findViewById(radioId);
-                checkButton(tipButton);
-            }
+        tip12.setOnClickListener(view -> {
+            int radioId = tipGroup.getCheckedRadioButtonId();
+            tipButton = findViewById(radioId);
+            checkButton(tipButton);
         });
 
         Button tip15 = findViewById(R.id.radioButtonradioButtonTipTwo);
-        tip15.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int radioId = tipGroup.getCheckedRadioButtonId();
-                tipButton = findViewById(radioId);
-                checkButton(tipButton);
-            }
+        tip15.setOnClickListener(view -> {
+            int radioId = tipGroup.getCheckedRadioButtonId();
+            tipButton = findViewById(radioId);
+            checkButton(tipButton);
         });
 
         Button tip18 = findViewById(R.id.radioButtonradioButtonTipThree);
-        tip18.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int radioId = tipGroup.getCheckedRadioButtonId();
-                tipButton = findViewById(radioId);
-                checkButton(tipButton);
-            }
+        tip18.setOnClickListener(view -> {
+            int radioId = tipGroup.getCheckedRadioButtonId();
+            tipButton = findViewById(radioId);
+            checkButton(tipButton);
         });
 
         Button tip20 = findViewById(R.id.radioButtonradioButtonTipFour);
-        tip20.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int radioId = tipGroup.getCheckedRadioButtonId();
-                tipButton = findViewById(radioId);
-                checkButton(tipButton);
-            }
+        tip20.setOnClickListener(view -> {
+            int radioId = tipGroup.getCheckedRadioButtonId();
+            tipButton = findViewById(radioId);
+            checkButton(tipButton);
         });
 
         peopleAmt = findViewById(R.id.editPeopleAmt);
@@ -89,43 +76,36 @@ public class MainActivity extends AppCompatActivity {
         overage = findViewById(R.id.textOverageCalc);
         peopleGo = findViewById(R.id.buttonGo);
 
-        // go button
-        peopleGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // check if the user put the number of people
-                // no input = 1 person
-                int people;
-                if (peopleAmt.getText().toString().equals("") || Integer.parseInt(String.valueOf(peopleAmt.getText().toString()))<1) {
-                    people = 1;
-                } else {
-                    people = Integer.parseInt(String.valueOf(peopleAmt.getText().toString()));
-                }
+        personTotal.setText(getString(R.string.total_per_person, split));
+        overage.setText(getString(R.string.overage, over));
 
-                calculateSplit(people);
+        // go button
+        peopleGo.setOnClickListener(view -> {
+            // check if the user put the number of people
+            // no input = 1 person
+            int people;
+            if (peopleAmt.getText().toString().equals("") || Integer.parseInt(peopleAmt.getText().toString())<1) {
+                people = 1;
+            } else {
+                people = Integer.parseInt(peopleAmt.getText().toString());
             }
+
+            calculateSplit(people);
         });
 
         clearAll = findViewById(R.id.buttonClear);
-        clearAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                billTotal.setText("");
-                tipGroup.clearCheck();
-
-                tipAmount.setText("$0.00");
-                tip = 0;
-                tipTotal.setText("$0.00");
-                total = 0;
-                peopleAmt.setText("");
-                personTotal.setText("$0.00");
-                split = 0;
-                overage.setText("$0.00");
-                over = 0;
-
-                Log.d("clear tip", Double.toString(tip));
-                Log.d("clear total", Double.toString(total));
-            }
+        clearAll.setOnClickListener(view -> {
+            billTotal.setText("");
+            tipGroup.clearCheck();
+            tip = 0;
+            tipAmount.setText(getString(R.string.tip_amount, tip));
+            total = 0;
+            tipTotal.setText(getString(R.string.total_with_tip, total));
+            peopleAmt.setText("");
+            split = 0;
+            personTotal.setText(getString(R.string.total_per_person, split));
+            over = 0;
+            overage.setText(getString(R.string.overage, over));
         });
 
     }
@@ -133,12 +113,11 @@ public class MainActivity extends AppCompatActivity {
     public void checkButton(RadioButton tipButton){
         // check if the user inputted nothing or a value
         // no input bill is set to zero and selection is cleared
-        double bill;
+        double bill = 0;
         if (billTotal.getText().toString().equals("")) {
-            bill = 0.00;
             tipGroup.clearCheck();
         } else {
-            bill = Double.parseDouble(String.valueOf(billTotal.getText().toString()));
+            bill = (Double.parseDouble(billTotal.getText().toString()));
         }
 
         // get the percent tip the user selected
@@ -151,29 +130,29 @@ public class MainActivity extends AppCompatActivity {
         calculateTotal(tip, bill);
     }
 
-    public double calculateTip(double percent, double bill){
-        tip = Math.round(bill*100.0*percent/100.00)/100.0;
-        tipAmount.setText("$" + String.format("%1$,.2f", tip));
+    public double calculateTip(int percent, double bill){
+        tip = Math.ceil(bill*(percent/100.00)*100)/100;
+        tipAmount.setText(getString(R.string.tip_amount, tip));
         return tip;
     }
 
     public void calculateTotal(double tip, double bill){
         total = bill+tip;
-        tipTotal.setText("$" + String.format("%1$,.2f", total));
+        tipTotal.setText(getString(R.string.total_with_tip, total));
     }
 
     public void calculateSplit(int people){
         split = Math.ceil(total*100.0/people)/100.0;
 
         // display split amount
-        personTotal.setText("$" + String.format("%1$,.2f", split));
+        personTotal.setText(getString(R.string.total_per_person, split));
         calculateOverage(split, people);
     }
 
     public void calculateOverage(double split, int people){
         double splitTotal = split*people;
         over = ((splitTotal*100)-(total*100))/100.00;
-        overage.setText("$" + String.format("%1$,.2f", over));
+        overage.setText(getString(R.string.overage, over));
     }
 
     @Override
@@ -185,11 +164,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putDouble("totalWithTip", total);
         outState.putDouble("peopleSplit", split);
         outState.putDouble("overageTotal", over);
-
-        Log.d("saved tip", String.valueOf(tip));
-        Log.d("saved total", String.valueOf(total));
-        Log.d("saved split", String.valueOf(split));
-        Log.d("saved overage", String.valueOf(over));
     }
 
     @Override
@@ -199,27 +173,22 @@ public class MainActivity extends AppCompatActivity {
 
         tip = savedInstanceState.getDouble("tipAmount");
         if (tip != 0){
-            tipAmount.setText("$" + String.format("%1$,.2f", tip));
+            tipAmount.setText(getString(R.string.tip_amount, tip));
         }
 
         total = savedInstanceState.getDouble("totalWithTip");
         if (total != 0){
-            tipTotal.setText("$" + String.format("%1$,.2f", total));
+            tipTotal.setText(getString(R.string.total_with_tip, total));
         }
 
         split = savedInstanceState.getDouble("peopleSplit");
         if (split != 0){
-            personTotal.setText("$" + String.format("%1$,.2f", split));
+            personTotal.setText(getString(R.string.total_per_person, split));
         }
 
         over = savedInstanceState.getDouble("overageTotal");
         if (over != 0){
-            overage.setText("$" + String.format("%1$,.2f", over));
+            overage.setText(getString(R.string.overage, over));
         }
-
-        Log.d("restored tip", String.valueOf(tip));
-        Log.d("restored total", String.valueOf(total));
-        Log.d("restored split", String.valueOf(split));
-        Log.d("restored overage", String.valueOf(over));
     }
 }
