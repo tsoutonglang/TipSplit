@@ -1,7 +1,9 @@
 package com.tsoutonglang.tsassignment1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,12 +20,15 @@ public class MainActivity extends AppCompatActivity {
 
     RadioGroup tipGroup;
     RadioButton tipButton;
+    double tip;
     TextView tipAmount, tipTotal;
+    double total;
 
     EditText peopleAmt;
     Button peopleGo;
     TextView personTotal, overage;
-    double total;
+    double split;
+    double over;
 
     Button clearAll;
 
@@ -102,12 +107,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: clear button
         clearAll = findViewById(R.id.buttonClear);
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                billTotal.setText("");
+                tipGroup.clearCheck();
 
+                tipAmount.setText("$0.00");
+                tip = 0;
+                tipTotal.setText("$0.00");
+                total = 0;
+                peopleAmt.setText("");
+                personTotal.setText("$0.00");
+                overage.setText("$0.00");
+
+                Log.d("clear tip", Double.toString(tip));
+                Log.d("clear total", Double.toString(total));
             }
         });
 
@@ -128,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
         int percent = Integer.parseInt(tipButton.getText().toString().substring(0, tipButton.getText().toString().indexOf('%')));
 
         // calculate how much tip is
-        double tip = calculateTip(percent, bill);
+        tip = calculateTip(percent, bill);
 
         // calculate the bill total with the tip
         calculateTotal(tip, bill);
     }
 
     public double calculateTip(double percent, double bill){
-        double tip = Math.round(bill*100.0*percent/100.00)/100.0;
+        tip = Math.round(bill*100.0*percent/100.00)/100.0;
         tipAmount.setText("$" + String.format("%1$,.2f", tip));
         return tip;
     }
@@ -146,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void calculateSplit(int people){
-        double split = Math.ceil(total*100.0/people)/100.0;
-        Log.d("debug - split amount", Double.toString(split));
+        split = Math.ceil(total*100.0/people)/100.0;
 
         // display split amount
         personTotal.setText("$" + String.format("%1$,.2f", split));
@@ -156,9 +171,54 @@ public class MainActivity extends AppCompatActivity {
 
     public void calculateOverage(double split, int people){
         double splitTotal = split*people;
-        Log.d("debug - split total", Double.toString(splitTotal));
-        double over = ((splitTotal*100)-(total*100))/100.00;
-        Log.d("debug - split total", Double.toString(over));
+        over = ((splitTotal*100)-(total*100))/100.00;
         overage.setText("$" + String.format("%1$,.2f", over));
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i("my lifecycle", " onSaveInstanceState called");
+
+        outState.putDouble("tipAmount", tip);
+        outState.putDouble("totalWithTip", total);
+        outState.putDouble("peopleSplit", split);
+        outState.putDouble("overageTotal", over);
+
+        Log.d("saved tip", String.valueOf(tip));
+        Log.d("saved total", String.valueOf(total));
+        Log.d("saved split", String.valueOf(split));
+        Log.d("saved overage", String.valueOf(over));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i("my lifecycle", "onRestoreInstanceState called");
+
+        tip = savedInstanceState.getDouble("tipAmount");
+        if (tip != 0){
+            tipAmount.setText("$" + String.format("%1$,.2f", tip));
+        }
+
+        total = savedInstanceState.getDouble("totalWithTip");
+        if (total != 0){
+            tipTotal.setText("$" + String.format("%1$,.2f", total));
+        }
+
+        split = savedInstanceState.getDouble("peopleSplit");
+        if (split != 0){
+            personTotal.setText("$" + String.format("%1$,.2f", split));
+        }
+
+        over = savedInstanceState.getDouble("overageTotal");
+        if (over != 0){
+            overage.setText("$" + String.format("%1$,.2f", over));
+        }
+
+        Log.d("restored tip", String.valueOf(tip));
+        Log.d("restored total", String.valueOf(total));
+        Log.d("restored split", String.valueOf(split));
+        Log.d("restored overage", String.valueOf(over));
     }
 }
